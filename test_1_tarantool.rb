@@ -25,7 +25,7 @@ end
 
 vic = box.space.vic
 if not vic.index.primary then
-  vic:create_index("primary", { type = "TREE", parts = { "sku", "warehouse", "condition", "source" } })
+  vic:create_index("primary", { type = "HASH", parts = { "sku", "warehouse", "condition", "source" } })
 end
 
 if not vic.index.scs then
