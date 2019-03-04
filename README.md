@@ -66,3 +66,14 @@ All tests are run in JRuby with 16 concurrent threads on my developer laptop (xp
 * Tarantool --- 25.3002s for 1000000 ops (39525.3836 ops / s)
 
 (just for the giggles, I also tested postgres with the same code as MySQL and similar tuning options, and it came out at 265.7750s for 1000000 ops (3762.5806 ops / s), slightly better than mysql, but nothing to be crazy about)
+
+## Notes on using the code
+
+<pre><code>
+# Generating a test, 1000 items, 1000000 operations
+ruby generate_tests_1.rb 1000 1000000 > test.bin
+# Running a test with tarantool
+ruby test_1_tarantool.rb test.bin
+</code></pre>
+
+To change connection settings, edit the test_1_xxx.rb code.
