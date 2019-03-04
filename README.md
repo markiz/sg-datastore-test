@@ -63,7 +63,7 @@ All tests are run in JRuby with 16 concurrent threads on my developer laptop (xp
 
 * MySQL --- 292.5940s for 1000000 ops (3417.7046 ops / s)
 * Redis --- 66.9713s for 1000000 ops (14931.7750 ops / s)
-* Tarantool --- 25.3002s for 1000000 ops (39525.3836 ops / s)
+* Tarantool --- 22.8442s for 1000000 ops (43774.7125 ops / s)
 
 (just for the giggles, I also tested postgres with the same code as MySQL and similar tuning options, and it came out at 265.7750s for 1000000 ops (3762.5806 ops / s), slightly better than mysql, but nothing to be crazy about)
 

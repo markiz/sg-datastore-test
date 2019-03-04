@@ -12,6 +12,7 @@ if not box.space.vic then
     "vic",
     {
       format = {
+        { name = "id", type = "unsigned" },
         { name = "sku", type = "unsigned" },
         { name = "warehouse", type = "unsigned" },
         { name = "condition", type = "unsigned" },
@@ -25,7 +26,12 @@ end
 
 vic = box.space.vic
 if not vic.index.primary then
-  vic:create_index("primary", { type = "HASH", parts = { "sku", "warehouse", "condition", "source" } })
+  box.schema.sequence.create("vic-id")
+  vic:create_index("primary", { type = "HASH", parts = { "id" }, sequence = "vic-id" })
+end
+
+if not vic.index.swcs then
+  vic:create_index("swcs", { type = "HASH", parts = { "sku", "warehouse", "condition", "source" } })
 end
 
 if not vic.index.scs then
@@ -34,7 +40,7 @@ end
 
 function seed_db(tuples)
   for i, tuple in ipairs(tuples) do
-    vic:insert(tuple)
+    vic:insert({ null, unpack(tuple) })
   end
 end
 
@@ -66,7 +72,7 @@ function capture_single_vic_scs(sku, condition, source, count)
       to_take = count - taken
     end
     taken = taken + to_take
-    vic:update({ tuple.sku, tuple.warehouse, tuple.condition, tuple.source }, {{ "-", 6, to_take }})
+    vic:update(tuple.id, {{ "-", 7, to_take }})
     table.insert(result, { tuple.sku, tuple.warehouse, tuple.condition, tuple.source, to_take })
   end
   box.commit()
@@ -74,7 +80,7 @@ function capture_single_vic_scs(sku, condition, source, count)
 end
 
 function release_single_vic_swcs(sku, warehouse, condition, source, count)
-  vic:update({ sku, warehouse, condition, source }, { { "+", 6, count } })
+  vic.index.swcs:update({ sku, warehouse, condition, source }, { { "+", 7, count } })
   return true
 end
 LUA
