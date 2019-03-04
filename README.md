@@ -36,13 +36,13 @@ Some notes on design and configuration follow.
 * For releasing we simply UPDATE incrementing the counter (no trx)
 * Config fine tuning:
 
-    <code>
+    <pre><code>
     innodb_buffer_pool_size = 4096M
     innodb_buffer_pool_instances = 8
     innodb_log_file_size = 512M
     innodb_log_buffer_size = 8M
     innodb_flush_log_at_trx_commit = 2 # This option increases performance by about 200-300%, but can potentially lose ~1 second of transactions in the event of a crash
-    </code>
+    </code></pre>
 * Version of mysql is vanilla 5.7, no modifications other than the config changes above
 
 ### Redis
